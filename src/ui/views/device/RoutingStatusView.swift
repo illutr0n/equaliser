@@ -17,35 +17,13 @@ struct RoutingStatusView: View {
             statusText
             Spacer()
             if showsOutputMenu {
-                outputMenu
+                OutputDeviceMenu(viewModel: viewModel)
             }
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
         .background(viewModel.statusBackgroundColor)
         .cornerRadius(6)
-    }
-
-    /// Picks the output device that Equaliser routes to.
-    private var outputMenu: some View {
-        Menu {
-            Section("Output") {
-                ForEach(viewModel.outputDevices.filter(\.isValidForSelection)) { device in
-                    Toggle(isOn: Binding(
-                        get: { viewModel.selectedOutputDeviceID == device.uid },
-                        set: { if $0 { viewModel.selectOutputDevice(device.uid) } }
-                    )) {
-                        Text(device.name)
-                    }
-                }
-            }
-        } label: {
-            Image(systemName: "hifispeaker")
-        }
-        .menuStyle(.borderlessButton)
-        .fixedSize()
-        .help("Output device")
-        .accessibilityLabel("Output device")
     }
 
     @ViewBuilder
